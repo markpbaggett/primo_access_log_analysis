@@ -35,11 +35,11 @@ while file_num < 9:
                             issn = re.search('query=is[sb]n[%2C,]+[exactcoins]+[%2C,]+([0-9-]*)', m)
                             if issn is not None:
                                 issn = issn.group(1)
-                    number_of_logs = number_of_logs + 1
+                    number_of_logs += 1
                     link = 'http://utk-almaprimo.hosted.exlibrisgroup.com' + m
                     output.write('<a href="' + link + '">' + str(number_of_logs)+ '</a>\n')
                     output_csv.writerow([str(number_of_logs), ip, date, time, query, issn, link])
-    file_num = file_num+1
+    file_num += 1
 print(number_of_logs)
 
 subs = open('./output_files/sample_set_search_queries.html', 'w')
