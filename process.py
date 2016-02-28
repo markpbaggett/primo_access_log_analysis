@@ -7,7 +7,8 @@ import csv
 file_num = 1
 output = open('./output_files/all_search_queries.html', 'w')
 output_csv = csv.writer(open('./output_files/output.csv', 'w'))
-number_of_logs = 0
+logs_parsed = 0
+queries_written = 0
 
 while file_num < 9:
     logfile = open('./access_logs/localhost_access_log.2016-02-0{0}.txt'.format(file_num), 'r')
@@ -35,13 +36,15 @@ while file_num < 9:
                             issn = re.search('query=is[sb]n[%2C,]+[exactcoins]+[%2C,]+([0-9-]*)', m)
                             if issn is not None:
                                 issn = issn.group(1)
-                    number_of_logs += 1
+                    logs_parsed += 1
                     link = 'http://utk-almaprimo.hosted.exlibrisgroup.com' + m
-                    if "afterPDS=" not in link:
-                        output.write('<a href="' + link + '">' + str(number_of_logs)+ '</a>\n')
-                        output_csv.writerow([str(number_of_logs), ip, date, time, query, issn, link])
+                    if "afterPDS=" not in link and "almaAzSearch=" not in link:
+                        output.write('<a href="' + link + '">' + str(logs_parsed)+ '</a>\n')
+                        output_csv.writerow([str(logs_parsed), ip, date, time, query, issn, link])
+                        queries_written += 1
     file_num += 1
-print(number_of_logs)
+print("Number of logs parsed: {0}\n".format(logs_parsed))
+print("Number of queries written to file: {0}\n".format(queries_written))
 
 subs = open('./output_files/sample_set_search_queries.html', 'w')
 inp2 = open('./output_files/all_search_queries.html', 'r')
