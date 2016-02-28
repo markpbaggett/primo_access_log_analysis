@@ -24,7 +24,7 @@ while file_num < 9:
                 if m.find('ct=facet') == -1 and m.find('ct=Next') == -1 and m.find('fn=showBrowse') == -1 and m.find('&isSerivcesPage=true') == -1 and m.find('%2B') == -1 and m.find('fn=Browse') == -1 and m.find('&fct') == -1 and m.find('tab=cr') == -1 and m.find('VQA') == -1 and (m.find('indx=1') > 0 or m.find('indx') == -1) and (m.find('query=') > 0 or m.find('freeText') > 0):
                     query = ''
                     issn = ''
-                    if (m.find('query=') > 0):
+                    if m.find('query=') > 0:
                         query = re.search('query=any[%2C,]+contains[%2C,]+([a-zA-z+%207]*)', m)
                         if query is not None:
                             query = query.group(1)
@@ -37,8 +37,9 @@ while file_num < 9:
                                 issn = issn.group(1)
                     number_of_logs += 1
                     link = 'http://utk-almaprimo.hosted.exlibrisgroup.com' + m
-                    output.write('<a href="' + link + '">' + str(number_of_logs)+ '</a>\n')
-                    output_csv.writerow([str(number_of_logs), ip, date, time, query, issn, link])
+                    if "afterPDS=" not in link:
+                        output.write('<a href="' + link + '">' + str(number_of_logs)+ '</a>\n')
+                        output_csv.writerow([str(number_of_logs), ip, date, time, query, issn, link])
     file_num += 1
 print(number_of_logs)
 
