@@ -9,12 +9,16 @@ output = open('./output_files/all_search_queries.html', 'w')
 output_csv = csv.writer(open('./output_files/output.csv', 'w'))
 logs_parsed = 0
 queries_written = 0
+num_of_deeps = 0
+local_search = 0
+advanced = 0
 
 while file_num < 9:
     logfile = open('./access_logs/localhost_access_log.2016-02-0{0}.txt'.format(file_num), 'r')
     headers = logfile.readlines()
     for header in headers:
         log = re.search('(^\d+[.]\d+[.]\d+[.]\d+) - - [()[]+(\d+/Feb/2016):(\d+:\d+:\d+)', header)
+        query_type = []
         if log:
             ip = log.group(1)
             date = log.group(2)
@@ -39,12 +43,28 @@ while file_num < 9:
                     logs_parsed += 1
                     link = 'http://utk-almaprimo.hosted.exlibrisgroup.com' + m
                     if "afterPDS=" not in link and "almaAzSearch=" not in link:
-                        output.write('<a href="' + link + '">' + str(logs_parsed)+ '</a>\n')
+                        if 'dlSearch' in link:
+                            query_type.append('Deep Link')
+                            num_of_deeps += 1
+                        else:
+                            query_type.append('Internal Search')
+                        if '&tab=local_tab' in link:
+                            query_type.append('UT Collections')
+                            local_search += 1
+                        if '&tab=default_tab' in link:
+                            query_type.append('One Search')
+                        if 'mode=Advanced' in link:
+                            query_type.append('Advanced Search')
+                            advanced += 1
+                        output.write('<a href="' + link + '">' + str(logs_parsed) + '</a>&nbsp;&nbsp;&nbsp;Type: ' + str(query_type) + '</b>\n')
                         output_csv.writerow([str(logs_parsed), ip, date, time, query, issn, link])
                         queries_written += 1
     file_num += 1
 print("Number of logs parsed: {0}\n".format(logs_parsed))
 print("Number of queries written to file: {0}\n".format(queries_written))
+print("Number of deep links: {0}\n".format(num_of_deeps))
+print("Number of local searches: {0}\n".format(local_search))
+print("Number of advanced searches: {0}\n".format(advanced))
 
 subs = open('./output_files/sample_set_search_queries.html', 'w')
 inp2 = open('./output_files/all_search_queries.html', 'r')
