@@ -7,13 +7,7 @@ import csv
 file_num = 1
 output = open('./output_files/all_search_queries.html', 'w')
 output_csv = csv.writer(open('./output_files/output.csv', 'w'))
-logs_parsed = 0
-queries_written = 0
-num_of_deeps = 0
-local_search = 0
-advanced = 0
-browse = 0
-course_reserve = 0
+logs_parsed = queries_written = num_of_deeps = local_search = advanced = browse = course_reserve = 0
 
 while file_num < 30:
     logfile = open('./access_logs/localhost_access_log.2016-02-{0}.txt'.format(file_num), 'r')
