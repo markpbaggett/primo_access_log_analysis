@@ -13,9 +13,10 @@ num_of_deeps = 0
 local_search = 0
 advanced = 0
 browse = 0
+course_reserve = 0
 
-while file_num < 9:
-    logfile = open('./access_logs/localhost_access_log.2016-02-0{0}.txt'.format(file_num), 'r')
+while file_num < 30:
+    logfile = open('./access_logs/localhost_access_log.2016-02-{0}.txt'.format(file_num), 'r')
     headers = logfile.readlines()
     for header in headers:
         log = re.search('(^\d+[.]\d+[.]\d+[.]\d+) - - [()[]+(\d+/Feb/2016):(\d+:\d+:\d+)', header)
@@ -60,6 +61,9 @@ while file_num < 9:
                         if '&mode=BrowseSearch' in link:
                             query_type.append('Browse Search')
                             browse += 1
+                        if '&tab=cr_tab' in link:
+                            query_type.append('Course Reserve')
+                            course_reserve += 1
                         output.write('<a href="' + link + '">' + str(logs_parsed) + '</a>&nbsp;&nbsp;&nbsp;Type: ' + str(query_type) + '</b>\n')
                         output_csv.writerow([str(logs_parsed), ip, date, time, query, issn, link])
                         queries_written += 1
@@ -70,6 +74,7 @@ print("Number of deep links: {0}\n".format(num_of_deeps))
 print("Number of local searches: {0}\n".format(local_search))
 print("Number of advanced searches: {0}\n".format(advanced))
 print("Number of browse searches: {0}\n".format(browse))
+print("Number of course reserve searches: {0}\n".format(course_reserve))
 
 subs = open('./output_files/sample_set_search_queries.html', 'w')
 inp2 = open('./output_files/all_search_queries.html', 'r')
