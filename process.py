@@ -59,7 +59,7 @@ while file_num < 30:
                             query_type.append('Course Reserve')
                             course_reserve += 1
                         output.write('<a href="' + link + '">' + str(logs_parsed) + '</a>&nbsp;&nbsp;&nbsp;Type: ' + str(query_type) + '</b>\n')
-                        output_csv.writerow([str(logs_parsed), ip, date, time, query, issn, link])
+                        output_csv.writerow([str(logs_parsed), date, time, query, issn, link])
                         queries_written += 1
     file_num += 1
 print("Number of logs parsed: {0}\n".format(logs_parsed))
