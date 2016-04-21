@@ -2,6 +2,18 @@
 
 ---
 
+## About February 2016
+
+* 122570 Queries
+* 42715 are Deeplinks
+	* 35% 	
+* 13333 dont use One Search tab
+	* 11% 
+* 7753 are advanced searches
+	* 6% 
+* 1168 Browses
+	* ~1% 
+
 ## About Survey Respondents
 
 * Participants (**11**):
